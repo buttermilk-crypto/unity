@@ -30,9 +30,10 @@ public class TestTreeNode {
 	@Test
 	public void test3() {
 		
-		   Node root = Nodes.element("root", Nodes.attributes("id", "1"),
+		   Node root = Nodes.element("root",
 				Nodes.element("a", "some text"),
-				Nodes.element("b", "some more text")
+				Nodes.element("b", "some more text"),
+				Nodes.element("c", "some c text")
 		   );
 					
 		 //  	PrintJSONVisitor visitor = new PrintJSONVisitor();

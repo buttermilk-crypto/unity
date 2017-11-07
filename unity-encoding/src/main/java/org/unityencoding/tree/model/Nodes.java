@@ -8,9 +8,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.unityencoding.antlr.toolkit.UnityAntlr4Listener;
 import org.unityencoding.antlr.toolkit.UnityLexer;
 import org.unityencoding.antlr.toolkit.UnityParser;
-import org.unityencoding.antlr.toolkit.listener.UnityAntlr4Listener;
 
 
 /**

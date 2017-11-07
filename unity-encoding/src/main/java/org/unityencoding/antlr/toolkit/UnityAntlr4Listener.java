@@ -1,4 +1,4 @@
-package org.unityencoding.antlr.toolkit.listener;
+package org.unityencoding.antlr.toolkit;
 
 import java.util.Date;
 
@@ -23,8 +23,10 @@ public class UnityAntlr4Listener extends UnityBaseListener  {
 
 	protected TreeNode<Payload> root;
 	protected TreeNode<Payload> current;
+	protected TreeNode<Payload> child;
 	
 	protected Date startTime, endTime;
+	protected int siblingDepth;
 	
 	public UnityAntlr4Listener() {}
 	
@@ -43,12 +45,22 @@ public class UnityAntlr4Listener extends UnityBaseListener  {
 		if(root == null){
 			root = Nodes.element(name);
 			current = root;
+			siblingDepth = ctx.depth();
 		}else{
 			Node e = Nodes.element(name);
-			current.add(e);
-			current = e;
+			if(siblingDepth != ctx.depth()) {
+				current.add(e);
+				child = e;
+			}
+			else{
+				current = e;
+				child = e;
+				siblingDepth = ctx.depth();
+			}
+			
 		}
 	}
+
 	
 	@Override public void enterObject(UnityParser.ObjectContext ctx) { 
 		JsonElement je = (JsonElement) current.data;
@@ -65,22 +77,22 @@ public class UnityAntlr4Listener extends UnityBaseListener  {
 	
 	@Override public void enterStringValue(UnityParser.StringValueContext ctx) {
 		String val = trim(ctx.getText());
-		current.add(new JsonText(val));
+		child.add(new JsonText(val));
 	}
 	
 	@Override public void enterNumberValue(UnityParser.NumberValueContext ctx) { 
 		String val = ctx.NUMBER().getText();
-		current.add(new JsonNumber(val));
+		child.add(new JsonNumber(val));
 	}
 	
 	@Override public void enterAtom(UnityParser.AtomContext ctx) { 
 		String val = ctx.getText();
 		if(val.equals("true")){
-			current.add(new JsonBool(true));
+			child.add(new JsonBool(true));
 		}else if(val.equals("false")){
-			current.add(new JsonBool(false));
+			child.add(new JsonBool(false));
 		}else if(val.equals("null")){
-			current.add(new JsonNil());
+			child.add(new JsonNil());
 		}
 			
 	}

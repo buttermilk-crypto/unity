@@ -17,7 +17,7 @@ array
    ;                                    
 
 value
-   : array  	#ArrayValue
+   : array      #ArrayValue
    | STRING 	#StringValue 		
    | NUMBER 	#NumberValue 				
    | 'true'		#Atom			
