@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- downloaded from http://stackoverflow.com/questions/32122566/node-soap-how-to-create-a-complex-message-with-specific-attributes -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://WSDLPROVIDER" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Body>
+        <ns1:enqueue>
+            <domain xsi:type="xsd:string">STH</domain>
+            <messageBodies SOAP-ENC:arrayType="xsd:string[1]" xsi:type="SOAP-ENC:Array">
+                <item xsi:type="xsd:string">STHE</item>
+            </messageBodies>
+            <recipientNumbers SOAP-ENC:arrayType="xsd:string[2]" xsi:type="SOAP-ENC:Array">
+                <item xsi:type="xsd:string">09xxxxxxxx</item>
+                <item xsi:type="xsd:string">09xxxxxxxx</item>
+            </recipientNumbers>
+            <senderNumbers SOAP-ENC:arrayType="xsd:string[1]" xsi:type="SOAP-ENC:Array">
+                <item xsi:type="xsd:string">3000xxxxx</item>
+            </senderNumbers>
+            <encodings xsi:nil="true" xsi:type="SOAP-ENC:Array" />
+            <udhs xsi:nil="true" xsi:type="SOAP-ENC:Array" />
+            <messageClasses xsi:nil="true" xsi:type="SOAP-ENC:Array" />
+            <priorities xsi:type="SOAP-ENC:Array" />
+            <checkingMessageIds SOAP-ENC:arrayType="xsd:long[2]" xsi:type="SOAP-ENC:Array">
+                <item xsi:type="xsd:long">100</item>
+                <item xsi:type="xsd:long">101</item>
+            </checkingMessageIds>
+        </ns1:enqueue>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

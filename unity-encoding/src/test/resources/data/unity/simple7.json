@@ -1,0 +1,8 @@
+["s", {"id":"s-id value"}, 
+	["a", {"id":"a-id value"}, "Some mixed text ",
+		["i", "italicized"], " and some after."
+	],
+	["b", {"id":"b-id value"}, 
+	    76.45
+	]
+]

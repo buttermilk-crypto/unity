@@ -1,0 +1,9 @@
+
+["addressBook"
+   ["card"
+     ["name", "John Smith"]
+     ["email", "js@example.com"]]
+   ["card"
+     ["name", "Fred Boggs"]
+     ["email", "fb@example.net"]]
+ ]

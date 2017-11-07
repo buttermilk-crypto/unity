@@ -1,0 +1,12 @@
+["e", "addressBook", 
+  ["oom",
+    ["e", "card",
+      ["e", "name",
+	["t"]
+      ],
+      ["e", "email",
+	["t"]
+      ]
+    ]
+  ]
+]
