@@ -1,7 +1,7 @@
 # Unity Encoding - JSON As It Should Have Been
 
 The Unity Encoding is a set of constraints applied to the JSON which makes the resulting output
-more usable in the context of XML compatibility, data validation, and probably for other uses not yet identified. 
+more usable in the context of XML compatibility and data validation. 
 
 Every Unity-encoded file is pure JSON: it can be parsed with any JSON parser (such as in a web browser) 
 and consumed by any existing JSON-based tooling.  
@@ -47,6 +47,20 @@ than an object. These items would typically be string or array types which is ho
 the other types can be used. 
   - These nested arrays (which may be nested to any depth) must follow the same constraints as described 
 above for the root production. 
+
+## "But it looks like a bunch of arrays!"
+
+Yes, that's right. Unity-encoded JSON leverages JSON arrays as the fundamental data-structure. The
+ubiquitous JSON Object is only found in one use case, that is, for attributes of an array.
+
+Going further, every array has a name token in the first slot; there are no anonymous or unnamed arrays.
+
+What this basically means is that Unity-encoding supports or implements both the Element and Attribute parts of XML Infoset.
+
+https://www.w3.org/TR/2004/REC-xml-infoset-20040204/
+
+Which JSON does not. This is the critically important difference. By supporting Elements and Attributes, we can do
+many things JSON by itself cannot do. 
 
 
 ## Tooling
@@ -107,13 +121,17 @@ Here's an example of using the Antlr 4 parser in unrolled form:
     try (InputStream in = this.getClass().getResourceAsStream(
 					"/data/unity/books.json");
 			) {
+			
+			   // boilerplate
 				ANTLRInputStream cStream = new ANTLRInputStream(in);
 				UnityLexer lexer = new UnityLexer(cStream);
 				CommonTokenStream tokens = new CommonTokenStream(lexer);
 				UnityParser p = new UnityParser(tokens);
 				UnityParser.JsonContext tree = p.json();
-				UnityAntlr4Listener l = new UnityAntlr4Listener();
-			   ParseTreeWalker.DEFAULT.walk(l, tree);
+				
+				// our listener
+            UnityAntlr4Listener l = new UnityAntlr4Listener();
+            ParseTreeWalker.DEFAULT.walk(l, tree);
 			 
 			   // get the root node from what has been parsed
 				TreeNode<Payload> r = l.getRoot();
