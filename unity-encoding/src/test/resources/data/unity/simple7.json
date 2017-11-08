@@ -4,5 +4,6 @@
 	],
 	["b", {"id":"b-id value"}, 
 	    76.45
-	]
+	],
+	["c", true, false, null]
 ]

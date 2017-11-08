@@ -3,7 +3,7 @@ package org.unityencoding.tree.model;
 import java.io.Writer;
 
 /**
- * Print out JSON from our local, simple tree data model. 
+ * Print out JSON from our simple tree data model. 
  * 
  * @author Dave
  *
@@ -83,11 +83,7 @@ public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor
 					if(previousNode != null && !(previousNode.data instanceof JsonElement)){
 						write("]");
 					}else{
-						//if(leaf){
-						//	write("]");
-						//}else{
-						   write('\n'); write(spaces(depth)); write("]");
-						//}
+						write('\n'); write(spaces(depth)); write("]");
 					}
 					
 				}else{

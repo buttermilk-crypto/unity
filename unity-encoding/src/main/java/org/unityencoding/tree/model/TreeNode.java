@@ -16,6 +16,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	public T data;
 	public TreeNode<T> parent;
 	public List<TreeNode<T>> children; // lazy create
+	public int depth; 
 
 	public TreeNode(T data, TreeNode<T> parent) {
 		super();
@@ -89,6 +90,14 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
 	public Iterator<TreeNode<T>> iterator() {
 		TreeNodeIterator<T> iter = new TreeNodeIterator<T>(this);
 		return iter;
+	}
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
 	}
 
 }

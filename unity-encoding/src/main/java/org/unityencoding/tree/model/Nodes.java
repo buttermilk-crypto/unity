@@ -140,6 +140,7 @@ public class Nodes {
 	public static void walk(TreeNode<Payload> node, NodeVisitor visitor, int depth) {
 		lockWalk.lock();
 		try {
+			if(node == null) return;
 			visitor.setDepth(++depth);
 			visitor.start(node.data);
 

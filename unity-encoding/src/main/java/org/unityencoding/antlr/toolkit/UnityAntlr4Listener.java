@@ -22,17 +22,18 @@ import org.unityencoding.tree.model.*;
 public class UnityAntlr4Listener extends UnityBaseListener  {
 
 	protected TreeNode<Payload> root;
-	protected TreeNode<Payload> current;
+	protected TreeNode<Payload> parent;
 	protected TreeNode<Payload> child;
 	
 	protected Date startTime, endTime;
-	protected int siblingDepth;
+	protected int depth;
 	
 	public UnityAntlr4Listener() {}
 	
 	@Override public void enterJson(UnityParser.JsonContext ctx) { 
 		// start
 		startTime = new Date();
+		depth = 0;
 	}
 	
 	@Override public void exitJson(UnityParser.JsonContext ctx) { 
@@ -41,61 +42,98 @@ public class UnityAntlr4Listener extends UnityBaseListener  {
 	}
 	
 	@Override public void enterArray(UnityParser.ArrayContext ctx) { 
+		
 		String name = trim(ctx.STRING().getText());
-		if(root == null){
+	//	System.err.println(depth+" "+name);
+		
+		if(depth == 0){
 			root = Nodes.element(name);
-			current = root;
-			siblingDepth = ctx.depth();
+			root.setDepth(depth);
+			parent = root;
+			child = null;
 		}else{
 			Node e = Nodes.element(name);
-			if(siblingDepth != ctx.depth()) {
-				current.add(e);
-				child = e;
-			}
-			else{
-				current = e;
-				child = e;
-				siblingDepth = ctx.depth();
-			}
+			e.setDepth(depth);
 			
+			if(depth == parent.getDepth()) {
+				
+				// up one
+				parent = parent.parent;
+				child = e;
+				parent.add(e);
+				
+			}else if(depth - parent.getDepth() == 1){
+				child = e;
+				parent.add(e);
+			}else if(depth - parent.getDepth() == 2){
+				parent = child;
+				parent.add(e);
+				child = e;
+			}else if(depth - parent.getDepth() == 0){
+				child = e;
+				parent.add(e);
+			}
 		}
+		
+		depth++;
+		
+	}
+	
+	@Override public void exitArray(UnityParser.ArrayContext ctx) { 
+		depth--;
+		//System.err.println(depth);
 	}
 
 	
 	@Override public void enterObject(UnityParser.ObjectContext ctx) { 
-		JsonElement je = (JsonElement) current.data;
-		je.attribs = new Attributes();
 		
+		JsonElement je = (JsonElement) parent.data;
+		je.attribs = new Attributes();
 	}
 	
 	@Override public void enterPair(UnityParser.PairContext ctx) { 
+		
 		String name = trim(ctx.STRING(0).getText());
 		String value = trim(ctx.STRING(1).getText());
-		JsonElement je = (JsonElement) current.data;
+		JsonElement je = (JsonElement) parent.data;
 		je.getAttribs().add(name, value);
+		
 	}
 	
 	@Override public void enterStringValue(UnityParser.StringValueContext ctx) {
+		
 		String val = trim(ctx.getText());
-		child.add(new JsonText(val));
+		if(child == null) parent.add(new JsonText(val));
+		else child.add(new JsonText(val));
+		
 	}
 	
 	@Override public void enterNumberValue(UnityParser.NumberValueContext ctx) { 
+		
 		String val = ctx.NUMBER().getText();
-		child.add(new JsonNumber(val));
+		if(child == null) parent.add(new JsonNumber(val));
+		else child.add(new JsonNumber(val));
+		
 	}
 	
 	@Override public void enterAtom(UnityParser.AtomContext ctx) { 
+		
 		String val = ctx.getText();
 		if(val.equals("true")){
-			child.add(new JsonBool(true));
+			if(child == null) parent.add(new JsonBool(true));
+			else child.add(new JsonBool(true));
 		}else if(val.equals("false")){
-			child.add(new JsonBool(false));
+			if(child == null) parent.add(new JsonBool(false));
+			else child.add(new JsonBool(false));
 		}else if(val.equals("null")){
-			child.add(new JsonNil());
+			if(child == null) parent.add(new JsonNil());
+			else child.add(new JsonNil());
 		}
+		
 			
 	}
+	
+	
 
 	private String trim(String val){
 		
@@ -129,14 +167,6 @@ public class UnityAntlr4Listener extends UnityBaseListener  {
 
 	public void setRoot(TreeNode<Payload> root) {
 		this.root = root;
-	}
-
-	public TreeNode<Payload> getCurrent() {
-		return current;
-	}
-
-	public void setCurrent(TreeNode<Payload> current) {
-		this.current = current;
 	}
 	
 	public long parseTimeMillis(){

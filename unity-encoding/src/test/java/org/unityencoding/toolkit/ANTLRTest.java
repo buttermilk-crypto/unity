@@ -50,7 +50,6 @@ public class ANTLRTest {
 	@Test
 	public void test1() {
 		
-	
 			try (InputStream in = this.getClass().getResourceAsStream(
 					"/data/unity/books.json");
 			) {
