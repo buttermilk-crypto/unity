@@ -60,9 +60,9 @@ This package can be used directly, as in the following examples.
 Create a tree with root and nodes a, b, and c:
 
 	Node root = Nodes.element("root", 
-	      Nodes.element("a", "some text"),
-			Nodes.element("b", "some more text"),
-			Nodes.element("c", "some c text")
+	  Nodes.element("a", "some text"),
+     Nodes.element("b", "some more text"),
+     Nodes.element("c", "some c text")
 	);
 
 Print the tree as Unity-encoded JSON:
@@ -92,7 +92,7 @@ Which outputs
 
 
 
-##Parsing Unity-encoded Inputs with Antlr4
+## Parsing Unity-encoded Inputs with Antlr4
 
 Antlr 4 is used to provide a Unity-encoding parser. The grammar is here:
 
@@ -125,7 +125,7 @@ Here's an example of using the Antlr 4 parser in unrolled form:
 The class UnityAntlr4Listener uses the tree model described above to build a tree from what has been parsed.
 
 
-##Utilities Leveraging Jackson
+## Utilities Leveraging Jackson
 
 The org.unityencoding.jackson.toolkit package contains classes to:
 
@@ -172,5 +172,5 @@ Example: Validate Unity-encoded JSON, leveraging Jackson
 		}
 
 
-	 
+
   
