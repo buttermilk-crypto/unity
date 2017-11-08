@@ -1,14 +1,15 @@
-# Jsonxf - JSON XML Formalism
+# Unity Encoding - JSON As It Should Have Been
 
-The JSON XML Formalism is a set of constraints applied to the JSON encoding process which makes the resulting output
+The Unity Encoding is a set of constraints applied to the JSON which makes the resulting output
 more usable in the context of XML compatibility, data validation, and probably for other uses not yet identified. 
 
-Every Jsonxf formatted file is pure JSON: it can be parsed with any JSON parser and consumed by any existing JSON-based tooling. On the other hand, few contemporary JSON files found in the wild will pass the Jsonxf validator. 
-Jsonxf is quite a different animal.
+Every Unity-encoded file is pure JSON: it can be parsed with any JSON parser (such as in a web browser) 
+and consumed by any existing JSON-based tooling.  
 
-The best way to understand Jsonxf is to look at a few productions:
 
-| XML                             | JSONXF                      | 
+The best way to understand Unity is to look at a few productions:
+
+| XML                             | Unity-encoded               | 
 | --------------------            |-----------------------------|
 | &lt;s/&gt;                      | ["s"]                       |
 | &lt;s&gt;text&lt;/s&gt;         | ["s", "text"]               |
@@ -17,7 +18,7 @@ The best way to understand Jsonxf is to look at a few productions:
 
 
 <table>
-<tr><th>XML</th><th>JSONXF</th></tr>
+<tr><th>XML</th><th>Unity-encoding</th></tr>
 <tr><td>
  &lt;s&gt; <br/>                          
  &nbsp;&nbsp;&nbsp;&nbsp; &lt;a&gt;Some text&lt;/a&gt; <br/>      
@@ -31,7 +32,7 @@ The best way to understand Jsonxf is to look at a few productions:
  </td></tr>
  </table>
  
- Here is a list of the Jsonxf constraints:
+ Here is a list of the Unity-encoding constraints:
  
   - The character encoding must be UTF-8.
   - The root production must be an array and cannot be of zero size.
@@ -47,68 +48,129 @@ the other types can be used.
   - These nested arrays (which may be nested to any depth) must follow the same constraints as described 
 above for the root production. 
 
-That's pretty much all there is to know. We'll cover XML entities and whitespace handling further on. 
 
 ## Tooling
 
-In this package are a few tools to start the conversation about Jsonxf. To convert XML into JSON, you can use
-something like the following:
+In this package are a few tools to start the conversation about Unity-encoding. 
 
-    try(
-    InputStream in = this.getClass().getResourceAsStream("/data/xml/books.xml");
-	 InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-	 ){
-	     XMLToJSON converter = new XMLToJSON(reader);
-	     converter.setKeepIgnorableWhitespace(false);
-	     converter.setTrim(true);
-	     converter.setPrettyPrint(true);
-	     String output = converter.parse();
-	     System.out.println(output);
-	 }catch(IOException x){
-		x.printStackTrace();
-	 }
-	 
-The various whitespace-related methods are necessary because XML, being a species of markup, is overly concerned
-with whitespace and its handling. This is one of the improvements we see in JSON. 
+The org.unityencoding.tree.model package contains a tree data structure for representing Unity (JSON) data. 
 
-At any rate, the above is a SAXParser-based implementation and turns out efficient conversions.
+This package can be used directly, as in the following examples.
 
-To generate XML from Jsonxf, you can use the following tool:
+Create a tree with root and nodes a, b, and c:
 
-    try (
-		InputStream in = this.getClass().getResourceAsStream("/data/jsonxf/books.json");
-		InputStreamReader r =	new InputStreamReader(in);
-	){
-	  JSONToXML jx = new JSONToXML(r);
-	  jx.walk();
-	  System.out.println(jx.pretty());
-	}catch(IOException x){
-		x.printStackTrace();
-	}
+	Node root = Nodes.element("root", 
+	      Nodes.element("a", "some text"),
+			Nodes.element("b", "some more text"),
+			Nodes.element("c", "some c text")
+	);
 
-## Validation
+Print the tree as Unity-encoded JSON:
+ 
+    Nodes.printJson(root);
 
-Valid XML will always convert to valid Json, but going the other way it helps to have a validator. I've provided
-a very simple one:
+Which outputs
 
-	for(int i = 0;i<8;i++){
-		try (
-				InputStream in =  this.getClass()
-				     .getResourceAsStream("/data/jsonxf/simple"+i+".json");
-				InputStreamReader r =	new InputStreamReader(in);
-			){
-				ValidateJsonxf validator = new ValidateJsonxf(r);
-				boolean ok = validator.validate();
-				Assert.assertTrue(ok);
-			}catch(IOException x){
+    ["root",
+     ["a", "some text"],
+     ["b", "some more text"],
+     ["c", "some c text"]
+    ]
+ 
+Print the tree as XML:
+
+    Nodes.printXML(root);
+ 
+Which outputs
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+      <a>some text</a>
+      <b>some more text</b>
+      <c>some c text</c>
+     </root>
+
+
+
+##Parsing Unity-encoded Inputs with Antlr4
+
+Antlr 4 is used to provide a Unity-encoding parser. The grammar is here:
+
+https://github.com/buttermilk-crypto/unity/blob/master/unity-encoding/src/main/antlr4/org/unityencoding/antlr/toolkit/Unity.g4
+
+this is simply a reduced JSON grammar based on 
+
+https://github.com/antlr/grammars-v4/blob/master/json/JSON.g4
+
+Here's an example of using the Antlr 4 parser in unrolled form:
+
+    try (InputStream in = this.getClass().getResourceAsStream(
+					"/data/unity/books.json");
+			) {
+				ANTLRInputStream cStream = new ANTLRInputStream(in);
+				UnityLexer lexer = new UnityLexer(cStream);
+				CommonTokenStream tokens = new CommonTokenStream(lexer);
+				UnityParser p = new UnityParser(tokens);
+				UnityParser.JsonContext tree = p.json();
+				UnityAntlr4Listener l = new UnityAntlr4Listener();
+			   ParseTreeWalker.DEFAULT.walk(l, tree);
+			 
+			   // get the root node from what has been parsed
+				TreeNode<Payload> r = l.getRoot();
+				
+			} catch (IOException x) {
 				x.printStackTrace();
 			}
-	}
 
-## Future Directions
-
-The real work with validation will involve using XML schema validation techniques on pure Jsonxf encoded files. A high
-priority is to implement XPath.
+The class UnityAntlr4Listener uses the tree model described above to build a tree from what has been parsed.
 
 
+##Utilities Leveraging Jackson
 
+The org.unityencoding.jackson.toolkit package contains classes to:
+
+  - Transform Unity-encoded JSON into XML
+  - Transform XML into Unity-encoded JSON, using SAX
+  - Validate Unity-encoded input
+  
+  
+Example: Transform Unity-encoded JSON into XML
+  
+    try (
+			InputStream in = this.getClass().getResourceAsStream("/data/unity/books.json");
+			InputStreamReader r =	new InputStreamReader(in);
+		){
+			UnityToXMLWithJackson jx = new UnityToXMLWithJackson(r);
+			jx.walk();
+			System.out.println(jx.pretty());
+		}catch(IOException x){
+			x.printStackTrace();
+		}
+
+Example: Transform XML into Unity-encoded JSON, using SAX/Jackson
+
+     InputStream in = this.getClass().getResourceAsStream("/data/xml/books.xml");
+     InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
+	  XMLToUnityWithSAX converter = new XMLToUnityWithSAX(reader);
+	  converter.setKeepIgnorableWhitespace(false);
+	  converter.setTrim(true);
+	  converter.setPrettyPrint(true);
+	  String output = converter.parse();
+	  System.out.println(output);
+	 
+Example: Validate Unity-encoded JSON, leveraging Jackson
+
+    try (
+			InputStream in = this.getClass().getResourceAsStream("/data/unity/books.json");
+			InputStreamReader r =	new InputStreamReader(in);
+		){
+				 ValidateUnityWithJackson validator = new ValidateUnityWithJackson(r);
+				 boolean ok = validator.validate();
+				 Assert.assertTrue(ok);
+		}catch(IOException x){
+				Assert.fail();
+		}
+
+
+	 
+  

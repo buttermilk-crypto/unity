@@ -7,8 +7,8 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * <p>Constraint checker for Unity encoding. All UNity files are expected to be valid JSON, and validate as JSON directly, 
- * but we have additional constraints to check as part of the formalism.</p>
+ * <p>Constraint checker for Unity encoding. All Unity files are expected to be valid JSON, and validate as JSON directly, 
+ * but have additional constraints to check.</p>
  * 
  * <p>The constraints of Unity are as follows:</p>
  * 

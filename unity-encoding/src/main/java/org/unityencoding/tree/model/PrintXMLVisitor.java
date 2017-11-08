@@ -24,6 +24,10 @@ public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor 
 	public PrintXMLVisitor(Writer writer, boolean prettyPrint) {
 		super(writer, prettyPrint);
 	}
+	
+	public void writeHeader() {
+		write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	}
 
 	@Override
 	public void start(Payload data) {
@@ -54,7 +58,7 @@ public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor 
 		}else if(data instanceof JsonText){
 			
 			JsonText t = (JsonText) data;
-			write(StringEscapeUtils.escapeXml10(t.value));
+			write(StringEscapeUtils.unescapeXml(t.value));	
 			
 		}else if(data instanceof JsonNumber){
 			JsonNumber t = (JsonNumber) data;

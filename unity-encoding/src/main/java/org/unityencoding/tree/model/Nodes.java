@@ -1,5 +1,7 @@
 package org.unityencoding.tree.model;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.concurrent.locks.Lock;
@@ -14,7 +16,7 @@ import org.unityencoding.antlr.toolkit.UnityParser;
 
 
 /**
- * <p>Static methods for creating and printing nodes (trees) </p> 
+ * <p>Static methods for creating and printing nodes (trees) programmatically</p> 
  * 
  * <p>
  * The inspiration for this approach is from an example found in the
@@ -170,20 +172,19 @@ public class Nodes {
 	
 	public static final void printXML(TreeNode<Payload> root, Writer writer, boolean prettyPrint){
 		PrintXMLVisitor visitor = new PrintXMLVisitor(writer, prettyPrint);
+		visitor.writeHeader();
 		Nodes.walk(root, visitor, 0);
 	}
 	
 	public static final void printJson(TreeNode<Payload> root){
 		StringWriter w = new StringWriter();
-		PrintJSONVisitor visitor = new PrintJSONVisitor(w, true);
-		Nodes.walk(root, visitor, 0);
+		printJson(root,w,true);
 		System.out.println(w.toString());
 	}
 	
 	public static final void printXML(TreeNode<Payload> root){
 		StringWriter w = new StringWriter();
-		PrintXMLVisitor visitor = new PrintXMLVisitor(w, true);
-		Nodes.walk(root, visitor, 0);
+		printXML(root,w,true);
 		System.out.println(w.toString());
 	}
 	
@@ -194,8 +195,9 @@ public class Nodes {
 	 * @param in
 	 * @return
 	 */
-	public static final TreeNode<Payload> parseUnity(String in){
+	public static final TreeNode<Payload> parseUnity(InputStream in){
 		lockParse.lock();
+		TreeNode<Payload> result = null;
 		try {
 			ANTLRInputStream cStream = new ANTLRInputStream(in);
 			UnityLexer lexer = new UnityLexer(cStream);
@@ -204,10 +206,15 @@ public class Nodes {
 			UnityParser.JsonContext tree = p.json();
 			UnityAntlr4Listener l = new UnityAntlr4Listener();
 			ParseTreeWalker.DEFAULT.walk(l, tree);
-			return l.getRoot();
+			result = l.getRoot();
+		} catch(IOException x){
+			x.printStackTrace();
 		}finally{
 			lockParse.unlock();
 		}
+		
+		return result;
 	}
+	
 
 }

@@ -65,6 +65,8 @@ public class ANTLRTest {
 				TreeNode<Payload> r = l.getRoot();
 				Nodes.printJson(r);
 				System.out.print(r);
+				Nodes.printXML(r);
+				System.out.print(r);
 			//	Nodes.printXML(r);
 			} catch (IOException x) {
 				x.printStackTrace();

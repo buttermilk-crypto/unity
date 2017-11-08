@@ -14,7 +14,7 @@ import org.xml.sax.InputSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Read XML input from reader using SAX and write the conversion out as JSONXF. Thread safe class.
+ * Read XML input from reader using SAX and write the conversion out as Unity. Thread safe class.
  * 
  * @author Dave
  *

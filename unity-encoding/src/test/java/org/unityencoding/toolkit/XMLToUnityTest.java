@@ -38,7 +38,7 @@ public class XMLToUnityTest {
 	
 	@Test
 	public void test2() {
-		InputStream in = this.getClass().getResourceAsStream("/data/jsonxf/simple.json");
+		InputStream in = this.getClass().getResourceAsStream("/data/unity/simple.json");
 		JsonFactory factory = new JsonFactory();
 		try {
 		JsonParser parser = factory.createParser(in);

@@ -174,7 +174,7 @@ class Pretty {
 		Transformer tf = TransformerFactory.newInstance().newTransformer();
 		tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		tf.setOutputProperty(OutputKeys.INDENT, "yes");
-		tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+		tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "1");
 		Writer out = new StringWriter();
 		tf.transform(new DOMSource(doc), new StreamResult(out));
 		return out.toString();

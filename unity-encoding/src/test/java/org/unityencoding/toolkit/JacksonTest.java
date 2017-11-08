@@ -16,7 +16,7 @@ public class JacksonTest {
 	@Test
 	public void testBook() {
 		try (
-			InputStream in = this.getClass().getResourceAsStream("/data/jsonxf/books.json");
+			InputStream in = this.getClass().getResourceAsStream("/data/unity/books.json");
 			InputStreamReader r =	new InputStreamReader(in);
 		){
 			UnityToXMLWithJackson jx = new UnityToXMLWithJackson(r);
@@ -32,7 +32,7 @@ public class JacksonTest {
 		
 		for(int i = 0;i<8;i++){
 			try (
-					InputStream in = this.getClass().getResourceAsStream("/data/jsonxf/simple"+i+".json");
+					InputStream in = this.getClass().getResourceAsStream("/data/unity/simple"+i+".json");
 					InputStreamReader r =	new InputStreamReader(in);
 				){
 					ValidateUnityWithJackson validator = new ValidateUnityWithJackson(r);
@@ -50,7 +50,7 @@ public class JacksonTest {
 		
 		for(int i = 0;i<8;i++){
 			try (
-					InputStream in = this.getClass().getResourceAsStream("/data/jsonxf/simple"+i+".json");
+					InputStream in = this.getClass().getResourceAsStream("/data/unity/simple"+i+".json");
 					InputStreamReader r =	new InputStreamReader(in);
 				){
 					UnityToXMLWithJackson jx = new UnityToXMLWithJackson(r);
@@ -65,7 +65,7 @@ public class JacksonTest {
 	@Test
 	public void test7() {
 			try (
-					InputStream in = this.getClass().getResourceAsStream("/data/jsonxf/simple7.json");
+					InputStream in = this.getClass().getResourceAsStream("/data/unity/simple7.json");
 					InputStreamReader r =	new InputStreamReader(in);
 				){
 					UnityToXMLWithJackson jx = new UnityToXMLWithJackson(r);

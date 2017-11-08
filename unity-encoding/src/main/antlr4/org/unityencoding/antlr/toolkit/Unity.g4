@@ -18,11 +18,11 @@ array
 
 value
    : array      #ArrayValue
-   | STRING 	#StringValue 		
-   | NUMBER 	#NumberValue 				
-   | 'true'		#Atom			
-   | 'false' 	#Atom          
-   | 'null'  	#Atom          
+   | STRING     #StringValue 		
+   | NUMBER     #NumberValue 				
+   | 'true'     #Atom			
+   | 'false'    #Atom          
+   | 'null'     #Atom          
    ;
 
 
