@@ -55,12 +55,12 @@ In this package are a few tools to start the conversation about Unity-encoding.
 
 The org.unityencoding.tree.model package contains a tree data structure for representing Unity (JSON) data. 
 
-This package can be used directly, as in the following examples.
+This package can be used directly, as in the following example.
 
 Create a tree with root and nodes a, b, and c:
 
-	Node root = Nodes.element("root", 
-	  Nodes.element("a", "some text"),
+    Node root = Nodes.element("root", 
+     Nodes.element("a", "some text"),
      Nodes.element("b", "some more text"),
      Nodes.element("c", "some c text")
 	);
@@ -164,11 +164,11 @@ Example: Validate Unity-encoded JSON, leveraging Jackson
 			InputStream in = this.getClass().getResourceAsStream("/data/unity/books.json");
 			InputStreamReader r =	new InputStreamReader(in);
 		){
-				 ValidateUnityWithJackson validator = new ValidateUnityWithJackson(r);
-				 boolean ok = validator.validate();
-				 Assert.assertTrue(ok);
+			ValidateUnityWithJackson validator = new ValidateUnityWithJackson(r);
+			boolean ok = validator.validate();
+			Assert.assertTrue(ok);
 		}catch(IOException x){
-				Assert.fail();
+			Assert.fail();
 		}
 
 
