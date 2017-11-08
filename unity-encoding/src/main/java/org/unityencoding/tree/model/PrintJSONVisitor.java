@@ -10,9 +10,6 @@ import java.io.Writer;
  */
 
 public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor {
-	
-	boolean leaf;
-	TreeNode<Payload> previousNode;
 
 	public PrintJSONVisitor() {
 		super();
@@ -70,13 +67,11 @@ public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor
 			write(", ");
 			write("null");
 		}
-			
 	}
 
 	@Override
 	public void end(Payload data) {
 		
-	
 	    if(data instanceof JsonElement){
 				if(pretty){
 					
@@ -97,21 +92,10 @@ public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor
 		this.leaf = isLeaf;
 	}
 
-	public boolean isLeaf() {
-		return leaf;
-	}
 
 	@Override
 	public void setPrevious(TreeNode<Payload> prevNode) {
 		this.previousNode = prevNode;
 	}
 
-	public TreeNode<Payload> getPreviousNode() {
-		return previousNode;
-	}
-
-	public void setPreviousNode(TreeNode<Payload> previousNode) {
-		this.previousNode = previousNode;
-	}
-	
 }

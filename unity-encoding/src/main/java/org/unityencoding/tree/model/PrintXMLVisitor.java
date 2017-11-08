@@ -13,9 +13,6 @@ import org.apache.commons.text.StringEscapeUtils;
 
 public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor {
 	
-	boolean leaf;
-	TreeNode<Payload> previousNode;
-
 	public PrintXMLVisitor() {
 		super();
 	}
@@ -55,21 +52,26 @@ public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor 
 			
 			
 		}else if(data instanceof JsonText){
-		
-			JsonText t = (JsonText) data;
 			
+			JsonText t = (JsonText) data;
 			write(StringEscapeUtils.escapeXml10(t.value));
 			
 		}else if(data instanceof JsonNumber){
 			JsonNumber t = (JsonNumber) data;
-			write(' ');
+			if(notStart()){
+				write(' ');
+			}
 			write(String.valueOf(t.val));
 		}else if(data instanceof JsonBool){
-			write(' ');
+			if(notStart()){
+				write(' ');
+			}
 			JsonBool t = (JsonBool) data;
 			write(String.valueOf(t.b));
 		}else if(data instanceof JsonNil){
-			write(' ');
+			if(notStart()){
+				write(' ');
+			}
 			write("null");
 		}
 			
@@ -80,7 +82,7 @@ public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor 
 		
 		if(data instanceof JsonElement){
 				if(pretty){
-					if(previousNode != null && !(previousNode.data instanceof JsonElement)){
+					if(notStart()){
 						write("</");
 						write(((JsonElement) data).name);
 						write(">");
@@ -104,21 +106,10 @@ public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor 
 		this.leaf = isLeaf;
 	}
 
-	public boolean isLeaf() {
-		return leaf;
-	}
 
 	@Override
 	public void setPrevious(TreeNode<Payload> prevNode) {
 		this.previousNode = prevNode;
 	}
 
-	public TreeNode<Payload> getPreviousNode() {
-		return previousNode;
-	}
-
-	public void setPreviousNode(TreeNode<Payload> previousNode) {
-		this.previousNode = previousNode;
-	}
-	
 }

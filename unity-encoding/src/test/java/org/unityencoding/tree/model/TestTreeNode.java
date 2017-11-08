@@ -35,10 +35,6 @@ public class TestTreeNode {
 				Nodes.element("b", "some more text"),
 				Nodes.element("c", "some c text")
 		   );
-					
-		 //  	PrintJSONVisitor visitor = new PrintJSONVisitor();
-		//	Nodes.walk(root, visitor, 0);
-		//	System.err.println(visitor.writer.toString());
 			
 		   PrintJSONVisitor visitor = new PrintJSONVisitor(true);
 			Nodes.walk(root, visitor, 0);

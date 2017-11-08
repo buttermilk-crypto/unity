@@ -14,7 +14,7 @@ import org.unityencoding.antlr.toolkit.UnityParser;
 
 
 /**
- * <p>Static methods for creating nodes (trees) </p> 
+ * <p>Static methods for creating and printing nodes (trees) </p> 
  * 
  * <p>
  * The inspiration for this approach is from an example found in the
@@ -94,7 +94,6 @@ public class Nodes {
 	}
 	
 	public static Node number(String text){
-		
 		return new Node(new JsonNumber(text));
 	}
 	

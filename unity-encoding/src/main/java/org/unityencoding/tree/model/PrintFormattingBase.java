@@ -20,6 +20,9 @@ public class PrintFormattingBase {
 	protected int depth;
 	protected boolean pretty;
 	
+	protected boolean leaf;
+	protected TreeNode<Payload> previousNode;
+	
 	public PrintFormattingBase() {
 		super();
 		writer = new StringWriter();
@@ -93,4 +96,7 @@ public class PrintFormattingBase {
 		}
 	}
 
+	protected boolean notStart(){
+		return (previousNode != null && !(previousNode.data instanceof JsonElement));
+	}
 }
