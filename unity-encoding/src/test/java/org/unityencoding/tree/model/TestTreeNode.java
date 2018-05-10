@@ -83,10 +83,6 @@ public class TestTreeNode {
 		) {
 			TreeNode<Payload> root = Nodes.parseUnity(in);
 			
-		//	PrintJSONVisitor visitor = new PrintJSONVisitor(true);
-		//	Nodes.walk(root, visitor, 0);
-		//	System.err.println(visitor.writer.toString());
-			
 			Nodes.printJson(root);
 			Nodes.printXML(root);
 			

@@ -1,6 +1,6 @@
 # The Unity Encoding. Sometimes Less Is More
 
-The Unity Encoding is a set of constraints applied to the JSON which makes the resulting output
+The Unity Encoding is a set of constraints applied to JSON which makes the resulting output
 more usable in the context of XML compatibility and data validation. 
 
 Every Unity-encoded file is *pure* JSON: it can be parsed with any JSON parser (such as in a web browser) 
