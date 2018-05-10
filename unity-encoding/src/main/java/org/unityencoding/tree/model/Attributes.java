@@ -1,5 +1,7 @@
 package org.unityencoding.tree.model;
 
+import java.util.Arrays;
+
 /**
  * Attribute container. A lightweight alternative to a hash map. 
  * 
@@ -95,6 +97,31 @@ public class Attributes {
 	
 	public boolean isEmpty() {
 		return names.length > 0;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(names);
+		result = prime * result + Arrays.hashCode(values);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Attributes other = (Attributes) obj;
+		if (!Arrays.equals(names, other.names))
+			return false;
+		if (!Arrays.equals(values, other.values))
+			return false;
+		return true;
 	}
 	
 }

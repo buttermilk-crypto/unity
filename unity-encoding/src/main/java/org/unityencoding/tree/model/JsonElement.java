@@ -6,7 +6,7 @@ package org.unityencoding.tree.model;
  * @author Dave
  *
  */
-public class JsonElement extends Payload {
+public class JsonElement implements Payload {
 
 	public final String name;
 	public Attributes attribs;
@@ -58,7 +58,37 @@ public class JsonElement extends Payload {
 	protected boolean validName(String name){
 		if(name == null) return false;
 		return org.apache.xerces.util.XMLChar.isValidName(name) && !name.toLowerCase().startsWith("xml") ;
-		
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((attribs == null) ? 0 : attribs.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JsonElement other = (JsonElement) obj;
+		if (attribs == null) {
+			if (other.attribs != null)
+				return false;
+		} else if (!attribs.equals(other.attribs))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 }

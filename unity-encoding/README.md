@@ -1,10 +1,10 @@
-# Unity Encoding - JSON As It Should Have Been
+# The Unity Encoding - JSON As It Could Have Been
 
 The Unity Encoding is a set of constraints applied to the JSON which makes the resulting output
 more usable in the context of XML compatibility and data validation. 
 
-Every Unity-encoded file is pure JSON: it can be parsed with any JSON parser (such as in a web browser) 
-and consumed by any existing JSON-based tooling.  
+Every Unity-encoded file is *pure* JSON: it can be parsed with any JSON parser (such as in a web browser) 
+and consumed by any existing JSON-based tooling. Nothing is added.   
 
 
 The best way to understand Unity is to look at a few productions:
@@ -32,9 +32,9 @@ The best way to understand Unity is to look at a few productions:
  </td></tr>
  </table>
  
- Here is a list of the Unity-encoding constraints:
+ Here is a list of the Unity encoding constraints:
  
-  - The character encoding must be UTF-8.
+  - The character encoding is expected to be UTF-8.
   - The root production must be an array and cannot be of zero size.
   - In the array, the first position is always a String which must meet the same character constraints as those for XML element names.
   - The second position of the array may be an object. This is the only position in the array where an object may appear.
@@ -51,21 +51,21 @@ above for the root production.
 ## "But it looks like a bunch of arrays!"
 
 Yes, that's right. Unity-encoded JSON leverages JSON arrays as the fundamental data-structure. The
-ubiquitous JSON Object is only found in one use case, that is, for attributes of an array.
+ubiquitous JSON Object is only found in one case, that is, for attributes of an array.
 
-Going further, every array has a name token in the first slot; there are no anonymous or unnamed arrays.
+Going further, every array has a *name* token in the first slot; there are no anonymous or unnamed arrays.
 
-What this basically means is that Unity-encoding supports or implements both the Element and Attribute parts of XML Infoset.
+What this basically means is that the Unity-encoding supports or implements both the Element and Attribute parts of XML Infoset, which are the most important parts.
 
 https://www.w3.org/TR/2004/REC-xml-infoset-20040204/
 
-Which JSON does not. This is the critically important difference. By supporting Elements and Attributes, we can do
+Which JSON does not. This is the critically important difference. By supporting Elements and Attributes Infoset, we can do
 many things JSON by itself cannot do. 
 
 
 ## Tooling
 
-In this package are a few tools to start the conversation about Unity-encoding. 
+In this package are a few tools to start the conversation about the Unity encoding. 
 
 The org.unityencoding.tree.model package contains a tree data structure for representing Unity (JSON) data. 
 
@@ -108,7 +108,7 @@ Which outputs
 
 ## Parsing Unity-encoded Inputs with Antlr4
 
-Antlr 4 is used to provide a Unity-encoding parser. The grammar is here:
+Antlr 4 is used to provide a Unity encoding parser. The grammar is here:
 
 https://github.com/buttermilk-crypto/unity/blob/master/unity-encoding/src/main/antlr4/org/unityencoding/antlr/toolkit/Unity.g4
 

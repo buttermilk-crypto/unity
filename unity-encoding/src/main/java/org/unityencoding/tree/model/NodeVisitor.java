@@ -1,7 +1,7 @@
 package org.unityencoding.tree.model;
 
 /**
- * Interface for node visitors
+ * Interface for node visitors who walk the tree
  * 
  * @author Dave
  * @see NodeUtil.walk
@@ -14,5 +14,6 @@ public interface NodeVisitor {
 	public void setLeaf(boolean isLeaf);
 	public void setPrevious(TreeNode<Payload> prevNode);
 	
+	public void setRoot(TreeNode<Payload> root);
 
 }

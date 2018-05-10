@@ -16,13 +16,13 @@ import org.unityencoding.antlr.toolkit.UnityParser;
 
 
 /**
- * <p>Static methods for creating and printing nodes (trees) programmatically</p> 
- * 
- * <p>
- * The inspiration for this approach is from an example found in the
- * "practicalxml" library: https://sourceforge.net/p/practicalxml/code/HEAD/tree/
- * </p>
- * 
+ 
+ <p>
+  Static methods for creating and printing nodes (trees) programmatically. 
+  The inspiration for this approach is from an example found in the "practicalxml" library by Keith Gregory: 
+  <a href="https://sourceforge.net/p/practicalxml/code/HEAD/tree/">link</a>
+  </p>
+  
 <pre>
   
         Node root = element("root",
@@ -131,6 +131,31 @@ public class Nodes {
 		}
 	}
 	
+	
+	public static int countNodes(TreeNode<Payload> root){
+		count = 0;
+		Nodes.count(root);
+		return count;
+	}
+	
+   static int count = 0;
+	private static void count(TreeNode<Payload> node) {
+		
+			if(node == null) return;
+
+			if(node.children != null){
+			
+				int size = node.children.size();
+				for(int index = 0; index<size; index++){
+					TreeNode<Payload> item = node.children.get(index);
+					count++;
+					count(item);
+				}
+			}
+
+	}
+	
+	
 	/**
 	 * Depth-first walk for visitors, thread-safe. Used for walking a tree to print out, etc.
 	 * 
@@ -140,6 +165,7 @@ public class Nodes {
 	 */
 	public static void walk(TreeNode<Payload> node, NodeVisitor visitor, int depth) {
 		lockWalk.lock();
+		
 		try {
 			if(node == null) return;
 			visitor.setDepth(++depth);
@@ -167,11 +193,13 @@ public class Nodes {
 	
 	public static final void printJson(TreeNode<Payload> root, Writer writer, boolean prettyPrint){
 		PrintJSONVisitor visitor = new PrintJSONVisitor(writer, prettyPrint);
+		visitor.setRoot(root);
 		Nodes.walk(root, visitor, 0);
 	}
 	
 	public static final void printXML(TreeNode<Payload> root, Writer writer, boolean prettyPrint){
 		PrintXMLVisitor visitor = new PrintXMLVisitor(writer, prettyPrint);
+		visitor.setRoot(root);
 		visitor.writeHeader();
 		Nodes.walk(root, visitor, 0);
 	}

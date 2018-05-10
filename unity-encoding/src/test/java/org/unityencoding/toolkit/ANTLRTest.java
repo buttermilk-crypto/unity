@@ -21,7 +21,6 @@ public class ANTLRTest {
 	@Test
 	public void test0() {
 		
-		
 		for(int i = 0; i<9;i++){
 		
 			try (InputStream in = this.getClass().getResourceAsStream(
@@ -35,11 +34,9 @@ public class ANTLRTest {
 				UnityAntlr4Listener l = new UnityAntlr4Listener();
 			//	TreePrinterListener l = new TreePrinterListener(p);
 			    ParseTreeWalker.DEFAULT.walk(l, tree);
-			 //   System.err.println(l);
 				TreeNode<Payload> r = l.getRoot();
 				Nodes.printJson(r);
 				System.out.print("\n");
-			//	Nodes.printXML(r);
 			} catch (IOException x) {
 				x.printStackTrace();
 			}

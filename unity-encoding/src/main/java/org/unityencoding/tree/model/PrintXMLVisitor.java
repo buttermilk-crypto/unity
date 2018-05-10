@@ -13,6 +13,8 @@ import org.apache.commons.text.StringEscapeUtils;
 
 public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor {
 	
+	TreeNode<Payload> root;
+	
 	public PrintXMLVisitor() {
 		super();
 	}
@@ -114,6 +116,12 @@ public class PrintXMLVisitor extends PrintFormattingBase implements NodeVisitor 
 	@Override
 	public void setPrevious(TreeNode<Payload> prevNode) {
 		this.previousNode = prevNode;
+	}
+
+	@Override
+	public void setRoot(TreeNode<Payload> root) {
+		this.root = root;
+		
 	}
 
 }

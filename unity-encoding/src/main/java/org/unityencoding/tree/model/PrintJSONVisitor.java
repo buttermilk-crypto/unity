@@ -10,6 +10,9 @@ import java.io.Writer;
  */
 
 public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor {
+	
+	TreeNode<Payload> root;
+	int treeSize = 0;
 
 	public PrintJSONVisitor() {
 		super();
@@ -17,6 +20,7 @@ public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor
 	
 	public PrintJSONVisitor(boolean prettyPrint) {
 		super(prettyPrint);
+		
 	}
 
 	public PrintJSONVisitor(Writer writer, boolean prettyPrint) {
@@ -73,12 +77,25 @@ public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor
 	public void end(Payload data) {
 		
 	    if(data instanceof JsonElement){
+	    	
 				if(pretty){
 					
 					if(previousNode != null && !(previousNode.data instanceof JsonElement)){
 						write("]");
 					}else{
-						write('\n'); write(spaces(depth)); write("]");
+						if(treeSize <2) {
+							write("]");
+						}else {
+							if(depth == 1) {
+							  write('\n'); 
+							  write("]");
+							}else {
+							  write('\n'); 
+							  write(spaces(depth)); 
+							  write("]");
+							}
+						}
+						
 					}
 					
 				}else{
@@ -96,6 +113,12 @@ public class PrintJSONVisitor extends PrintFormattingBase implements NodeVisitor
 	@Override
 	public void setPrevious(TreeNode<Payload> prevNode) {
 		this.previousNode = prevNode;
+	}
+
+	@Override
+	public void setRoot(TreeNode<Payload> root) {
+		this.root = root;
+		treeSize = Nodes.countNodes(root);
 	}
 
 }
