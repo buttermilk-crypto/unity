@@ -14,8 +14,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.antlr</groupId> <artifactId>antlr4-runtime</artifactId> 
-			<version>${antlr.version}</version> </dependency> -->
+	
 
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -63,7 +62,8 @@
 				<version>3.5.1</version>
 				<configuration>
 					<verbose>true</verbose>
-					<fork>false</fork>
+				    <fork>true</fork>
+					<executable>${JAVA_1_8_HOME}/bin/javac</executable>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
@@ -145,16 +145,22 @@
 
 
 	<properties>
-		<junit.version>4.8.2</junit.version>
-		<jackson.version>2.7.3</jackson.version>
-		<antlr.version>4.5.3</antlr.version>
+		<junit.version>4.12</junit.version>
+		<jackson.version>2.9.8</jackson.version>
+		
+		<!--  4.7 has some deprecations which will impact us -->
+		<antlr.version>4.6</antlr.version>
+		
+		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<JAVA_1_8_HOME>C:/Program Files/Java/jdk1.8.0_201</JAVA_1_8_HOME>
 
 		<!-- needed to get my inadequate comments to parse in Java 1.8 javadoc -->
 		<additionalparam>-Xdoclint:none</additionalparam>
 	</properties>
 	
-	<url>https://github.com/buttermilk-crypto/b2/bracket-properties</url>
+	<url>https://github.com/buttermilk-crypto/unity</url>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>

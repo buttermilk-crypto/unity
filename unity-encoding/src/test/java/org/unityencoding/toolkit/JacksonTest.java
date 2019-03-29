@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.unityencoding.jackson.toolkit.UnityToXMLWithJackson;
 import org.unityencoding.jackson.toolkit.ValidateUnityWithJackson;

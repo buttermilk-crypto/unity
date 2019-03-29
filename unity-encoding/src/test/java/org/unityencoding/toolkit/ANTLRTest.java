@@ -26,6 +26,7 @@ public class ANTLRTest {
 			try (InputStream in = this.getClass().getResourceAsStream(
 					"/data/unity/simple"+i+".json");
 			) {
+				
 				ANTLRInputStream cStream = new ANTLRInputStream(in);
 				UnityLexer lexer = new UnityLexer(cStream);
 				CommonTokenStream tokens = new CommonTokenStream(lexer);
